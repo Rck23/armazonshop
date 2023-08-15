@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Application.Features.Products.Queries.GetProductList;
+using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,8 +24,8 @@ namespace Ecommerce.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("list", Name ="GetProductList")]
-        [ProducesResponseType(typeof(IReadOnlyList<Product>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProductList()
+        [ProducesResponseType(typeof(IReadOnlyList<ProductVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IReadOnlyList<ProductVm>>> GetProductList()
         {
             var query = new GetProductListQuery(); 
 
