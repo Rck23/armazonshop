@@ -1,3 +1,4 @@
+using Ecommerce.Api.Middlewares;
 using Ecommerce.Application;
 using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Products.Queries.GetProductList;
@@ -101,6 +102,9 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
+//AGREGACION DE MIDDLEWARE CREADO
+app.UseMiddleware<ExceptionMiddleware>(); 
 
 app.UseAuthentication();
 
