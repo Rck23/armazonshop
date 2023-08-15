@@ -1,5 +1,7 @@
 ﻿using Ecommerce.Application.Persistence;
+using Ecommerce.Application.Specifications;
 using Ecommerce.Infrastructure.Persistence;
+using Ecommerce.Infrastructure.Specification;
 using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -33,6 +35,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
         _context.Set<T>().AddRange(entities);
     }
 
+
     public async Task DeleteAsync(T entity)
     {
         _context.Set<T>().Remove(entity);
@@ -53,6 +56,8 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
     {
         return await _context.Set<T>().ToListAsync();
     }
+
+
 
     public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate)
     {
@@ -94,6 +99,8 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
         return (await _context.Set<T>().FindAsync())!;
     }
 
+
+
     public async Task<T> GetEntityAsync(Expression<Func<T, bool>>? predicate, List<Expression<Func<T, object>>>? includes = null, bool disableTracking = true)
     {
         IQueryable<T> query = _context.Set<T>();
@@ -122,5 +129,28 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
 
         _context.Set<T>().Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
+    }
+
+    public async Task<T> GetByIdWithSpec(ISpecification<T> specification)
+    {
+        return (await ApplySpecification(specification).FirstOrDefaultAsync())!;
+
+    }
+
+    public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> specification)
+    {
+        return await ApplySpecification(specification).ToListAsync();
+
+    }
+
+    public async Task<int> CountAsync(ISpecification<T> specification)
+    {
+        // RETORNA LA CANTIDAD
+        return await ApplySpecification(specification).CountAsync();
+    }
+
+    public IQueryable<T> ApplySpecification(ISpecification<T> specification)
+    {
+        return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
     }
 }

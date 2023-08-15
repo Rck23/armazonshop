@@ -1,5 +1,7 @@
 ﻿using Ecommerce.Application.Features.Products.Queries.GetProductList;
+using Ecommerce.Application.Features.Products.Queries.PaginationProducts;
 using Ecommerce.Application.Features.Products.Queries.Vms;
+using Ecommerce.Application.Features.Shared.Queries;
 using Ecommerce.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +34,21 @@ namespace Ecommerce.Api.Controllers
             var productos = await _mediator.Send(query);
             
             return Ok(productos);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("pagination", Name ="PaginationProduct")]
+        [ProducesResponseType(typeof(PaginationVm<ProductVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginationVm<ProductVm>>> PaginationProduct([FromQuery] PaginationProductQuery paginationProductQuery)
+        {
+            // SOLO MUESTRE LOS ACTIVOS
+            paginationProductQuery.Status = ProductStatus.Activo;
+            var paginationProduct = await _mediator.Send(paginationProductQuery);
+
+            return Ok(paginationProduct);
+
+
         }
     }
 }

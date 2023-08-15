@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Ecommerce.Application.Specifications;
+using System.Linq.Expressions;
 
 namespace Ecommerce.Application.Persistence;
 
@@ -46,6 +47,11 @@ public interface IAsyncRepository<T> where T : class
     void AddRange(List<T> entities);
 
     void DeleteRange(IReadOnlyList<T> entities);
+
+    // PARA LA PAGINACION
+    Task<T> GetByIdWithSpec(ISpecification<T> specification);
+    Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> specification);
+    Task<int> CountAsync(ISpecification<T> specification);
 
 }
 
