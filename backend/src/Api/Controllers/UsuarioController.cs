@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Auths.Users.Commands.LoginUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
+using Ecommerce.Application.Features.Auths.Users.Commands.ResetPasswordByToken;
+using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
 using Ecommerce.Application.Features.Auths.Users.Vms;
 using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Application.Models.ImageManagement;
@@ -54,5 +56,24 @@ public class UsuarioController : ControllerBase
         }
 
         return await _mediator.Send(registerUser);
+    }
+
+
+    // CAMBIAR CONTRASEÑA 
+
+    [AllowAnonymous]
+    [HttpPost("forgotpassword", Name = "forgotpassword")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<ActionResult<string>> ForgotPassword([FromBody] SendPasswordCommand sendPassword)
+    {
+        return await _mediator.Send(sendPassword);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("resetpassword", Name = "resetpassword")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordByTokenCommand resetPasswordByToken)
+    {
+        return await _mediator.Send(resetPasswordByToken);
     }
 }
