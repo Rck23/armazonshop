@@ -1,6 +1,7 @@
 ﻿using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Auths.Users.Commands.LoginUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
+using Ecommerce.Application.Features.Auths.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
 using Ecommerce.Application.Features.Auths.Users.Vms;
@@ -60,7 +61,6 @@ public class UsuarioController : ControllerBase
 
 
     // CAMBIAR CONTRASEÑA 
-
     [AllowAnonymous]
     [HttpPost("forgotpassword", Name = "forgotpassword")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
@@ -75,5 +75,14 @@ public class UsuarioController : ControllerBase
     public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordByTokenCommand resetPasswordByToken)
     {
         return await _mediator.Send(resetPasswordByToken);
+    }
+
+
+    // ACTUALIZAR CONTRASEÑA 
+    [HttpPost("upadtepassword", Name = "upadtepassword")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<ActionResult<Unit>> UpadtePassword([FromBody] ResetPasswordCommand resetPassword)
+    {
+        return await _mediator.Send(resetPassword);
     }
 }
