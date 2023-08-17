@@ -4,6 +4,7 @@ using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
+using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auths.Users.Vms;
 using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Application.Models.ImageManagement;
@@ -79,10 +80,33 @@ public class UsuarioController : ControllerBase
 
 
     // ACTUALIZAR CONTRASEÑA 
-    [HttpPost("upadtepassword", Name = "upadtepassword")]
+    [HttpPost("updatepassword", Name = "updatepassword")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<ActionResult<Unit>> UpadtePassword([FromBody] ResetPasswordCommand resetPassword)
+    public async Task<ActionResult<Unit>> UpdatePassword([FromBody] ResetPasswordCommand resetPassword)
     {
         return await _mediator.Send(resetPassword);
+    }
+
+
+    // ACTUALIZAR USUARIO
+    [HttpPut("update", Name = "update")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> Update([FromForm]  UpdateUserCommand updateUser)
+    {
+        // VERERIFICAR LA IMAGEN 
+        if(updateUser.Foto is not null)
+        {
+             var resultImage = await _manageImageService.UploadImage(new ImageData
+            {
+                ImageStream = updateUser.Foto!.OpenReadStream(),
+                Nombre = updateUser.Foto!.Name
+            });
+
+            updateUser.FotoId = resultImage.PublicId;
+            updateUser.FotoUrl = resultImage.Url;
+        }
+
+
+        return await _mediator.Send(updateUser);
     }
 }
