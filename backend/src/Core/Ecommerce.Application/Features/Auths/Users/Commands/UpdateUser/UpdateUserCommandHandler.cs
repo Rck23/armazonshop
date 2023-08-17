@@ -57,7 +57,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, AuthR
             Email = userById.Email,
             Username = userById.UserName,
             Avatar = userById.AvatarUrl,
-            Token = _authService.CreateToken(userById, roles)
+            Token = _authService.CreateToken(userById, roles),
             Roles = roles
         };
     

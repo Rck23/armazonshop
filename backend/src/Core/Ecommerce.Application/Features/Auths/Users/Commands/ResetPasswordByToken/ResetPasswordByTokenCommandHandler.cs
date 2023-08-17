@@ -36,7 +36,7 @@ public class ResetPasswordByTokenCommandHandler : IRequestHandler<ResetPasswordB
         var tokenResult = Encoding.UTF8.GetString(token);
 
         // ACTIALIZAR LA CONTRASEÑA
-        var cambioResultado = await _userManager.ResetPasswordAsync(updateUser, tokenResult, request.Password);
+        var cambioResultado = await _userManager.ResetPasswordAsync(updateUser, tokenResult, request.Password!);
 
         // COMPARAMOS
         if (!cambioResultado.Succeeded)

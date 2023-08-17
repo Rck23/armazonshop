@@ -4,10 +4,13 @@ using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
+using Ecommerce.Application.Features.Auths.Users.Commands.UpdateAdminUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auths.Users.Vms;
 using Ecommerce.Application.Features.Products.Queries.Vms;
+using Ecommerce.Application.Models.Authorization;
 using Ecommerce.Application.Models.ImageManagement;
+using Ecommerce.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -107,6 +110,16 @@ public class UsuarioController : ControllerBase
         }
 
 
+        return await _mediator.Send(updateUser);
+    }
+
+
+    // ACTUALIZAR USUARIOS SIENDO ADMINISTRADOR 
+    [Authorize(Roles =Role.ADMIN)]
+    [HttpPut("updateadminuser", Name = "updateadminuser")]
+    [ProducesResponseType(typeof(Usuario), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<Usuario>> UpdateAdminUser([FromBody] UpdateAdminUserCommand updateUser)
+    {
         return await _mediator.Send(updateUser);
     }
 }

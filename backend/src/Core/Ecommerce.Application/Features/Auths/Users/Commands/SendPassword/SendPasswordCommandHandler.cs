@@ -25,7 +25,7 @@ public class SendPasswordCommandHandler : IRequestHandler<SendPasswordCommand, s
     public async Task<string> Handle(SendPasswordCommand request, CancellationToken cancellationToken)
     {
         // VALIDACION DE USUARIO EXISTE
-        var usuario = await _userManager.FindByEmailAsync(request.Email);
+        var usuario = await _userManager.FindByEmailAsync(request.Email!);
         if (usuario is null)
         {
             throw new BadRequestException("El usuario no existe!");
