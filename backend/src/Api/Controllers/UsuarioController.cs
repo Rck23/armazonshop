@@ -7,6 +7,9 @@ using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateAdminStatusUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateAdminUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
+using Ecommerce.Application.Features.Auths.Users.Queries.GetUserById;
+using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByToken;
+using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByUsername;
 using Ecommerce.Application.Features.Auths.Users.Vms;
 using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Application.Models.Authorization;
@@ -33,7 +36,7 @@ public class UsuarioController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("login", Name = "login")]
+    [HttpPost("Login", Name = "Login")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginUserCommand loginUser)
     {
@@ -42,7 +45,7 @@ public class UsuarioController : ControllerBase
 
 
     [AllowAnonymous]
-    [HttpPost("register", Name = "register")]
+    [HttpPost("Register", Name = "Register")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<AuthResponse>> Register([FromForm] RegisterUserCommand registerUser)
     {
@@ -67,7 +70,7 @@ public class UsuarioController : ControllerBase
 
     // CAMBIAR CONTRASEÑA 
     [AllowAnonymous]
-    [HttpPost("forgotpassword", Name = "forgotpassword")]
+    [HttpPost("ForgotPassword", Name = "ForgotPassword")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<string>> ForgotPassword([FromBody] SendPasswordCommand sendPassword)
     {
@@ -75,7 +78,7 @@ public class UsuarioController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("resetpassword", Name = "resetpassword")]
+    [HttpPost("ResetPassword", Name = "ResetPassword")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordByTokenCommand resetPasswordByToken)
     {
@@ -84,7 +87,7 @@ public class UsuarioController : ControllerBase
 
 
     // ACTUALIZAR CONTRASEÑA 
-    [HttpPost("updatepassword", Name = "updatepassword")]
+    [HttpPost("UpdatePassword", Name = "UpdatePassword")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<Unit>> UpdatePassword([FromBody] ResetPasswordCommand resetPassword)
     {
@@ -93,7 +96,7 @@ public class UsuarioController : ControllerBase
 
 
     // ACTUALIZAR USUARIO
-    [HttpPut("update", Name = "update")]
+    [HttpPut("Update", Name = "Update")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<ActionResult<AuthResponse>> Update([FromForm]  UpdateUserCommand updateUser)
     {
@@ -117,7 +120,7 @@ public class UsuarioController : ControllerBase
 
     // ACTUALIZAR USUARIOS SIENDO ADMINISTRADOR 
     [Authorize(Roles =Role.ADMIN)]
-    [HttpPut("updateadminuser", Name = "updateadminuser")]
+    [HttpPut("UpdateAdminUser", Name = "UpdateAdminUser")]
     [ProducesResponseType(typeof(Usuario), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<Usuario>> UpdateAdminUser([FromBody] UpdateAdminUserCommand updateUser)
     {
@@ -127,10 +130,48 @@ public class UsuarioController : ControllerBase
 
     // ACTUALIZAR EL ESTADO DEL USUARIO
     [Authorize(Roles = Role.ADMIN)]
-    [HttpPut("updateadminstatususer", Name = "updateadminstatususer")]
+    [HttpPut("UpdateAdminStatusUser", Name = "UpdateAdminStatusUser")]
     [ProducesResponseType(typeof(Usuario), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<Usuario>> UpdateAdminStatusUser([FromBody] UpdateAdminStatusUserCommand updateAdminStatusUser)
     {
         return await _mediator.Send(updateAdminStatusUser);
-    }   
+    }
+
+
+    // CONSULTA USUARIO POR ID
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpGet("{id}",  Name = "GetUsuarioById")]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> GetUsuarioById(string id)
+    {
+        var query = new GetUserByIdQuery(id);
+
+
+        return await _mediator.Send(query);
+    }
+
+    // CONSULTA USUARIO POR SESION TOKEN
+    [HttpGet(Name = "CurrentUser")]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> CurrentUser()
+    {
+        var query = new GetUserByTokenQuery();
+
+
+        return await _mediator.Send(query);
+    }
+
+
+
+    // CONSULTA USUARIO POR USERNAME
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpGet("username/{username}", Name = "GetUsuarioByUsername")]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> GetUsuarioByUsername(string username)
+    {
+        var query = new GetUserByUsernameQuery(username);
+
+
+        return await _mediator.Send(query);
+    }
 }
