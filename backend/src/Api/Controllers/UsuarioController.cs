@@ -10,8 +10,10 @@ using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserById;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByToken;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByUsername;
+using Ecommerce.Application.Features.Auths.Users.Queries.PaginationUsers;
 using Ecommerce.Application.Features.Auths.Users.Vms;
 using Ecommerce.Application.Features.Products.Queries.Vms;
+using Ecommerce.Application.Features.Shared.Queries;
 using Ecommerce.Application.Models.Authorization;
 using Ecommerce.Application.Models.ImageManagement;
 using Ecommerce.Domain;
@@ -173,5 +175,18 @@ public class UsuarioController : ControllerBase
 
 
         return await _mediator.Send(query);
+    }
+
+
+    // PAGINACION USUARIOS
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpGet("paginationAdmin", Name = "paginationAdmin")]
+    [ProducesResponseType(typeof(PaginationVm<Usuario>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PaginationVm<Usuario>>> PaginationAdmin([FromQuery] PaginationUsersQuery paginationUsers)
+    {
+       
+        var paginationUser = await _mediator.Send(paginationUsers);
+
+        return Ok(paginationUser);
     }
 }
