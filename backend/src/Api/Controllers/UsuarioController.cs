@@ -4,6 +4,7 @@ using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auths.Users.Commands.SendPassword;
+using Ecommerce.Application.Features.Auths.Users.Commands.UpdateAdminStatusUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateAdminUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auths.Users.Vms;
@@ -122,4 +123,14 @@ public class UsuarioController : ControllerBase
     {
         return await _mediator.Send(updateUser);
     }
+
+
+    // ACTUALIZAR EL ESTADO DEL USUARIO
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpPut("updateadminstatususer", Name = "updateadminstatususer")]
+    [ProducesResponseType(typeof(Usuario), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<Usuario>> UpdateAdminStatusUser([FromBody] UpdateAdminStatusUserCommand updateAdminStatusUser)
+    {
+        return await _mediator.Send(updateAdminStatusUser);
+    }   
 }
