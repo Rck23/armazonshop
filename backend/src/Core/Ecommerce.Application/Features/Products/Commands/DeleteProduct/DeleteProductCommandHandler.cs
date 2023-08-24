@@ -21,22 +21,18 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
 
     public async Task<ProductVm> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        var productToUpdate = await _unitOfWork.Repository<Product>().GetByIdAsync(request.ProductId);  
-
-        if(productToUpdate == null)
+        var productToUpdate = await _unitOfWork.Repository<Product>().GetByIdAsync(request.ProductId);
+        if(productToUpdate is null)
         {
             throw new NotFoundException(nameof(Product), request.ProductId);
         }
 
-        // CAMBIA EL ESTATUS DEL PRODUCTO
         productToUpdate.Status = productToUpdate.Status == ProductStatus.Inactivo 
-            ? ProductStatus.Activo : ProductStatus.Inactivo;
+                        ? ProductStatus.Activo : ProductStatus.Inactivo;
 
-        // ACTUALIZA EL ESTADO
-        await _unitOfWork.Repository<Product>().UpdateAsync(productToUpdate);  
-        
-        // SUBE EL ESTADO
-        return _mapper.Map<ProductVm>(productToUpdate); 
+            
+        await _unitOfWork.Repository<Product>().UpdateAsync(productToUpdate);
 
+        return _mapper.Map<ProductVm>(productToUpdate);
     }
 }

@@ -2,21 +2,23 @@
 
 namespace Ecommerce.Application.Features.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommandValidator: AbstractValidator<UpdateProductCommand> 
+public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
 {
     public UpdateProductCommandValidator()
     {
-        RuleFor(x => x.Nombre).NotEmpty()
-          .WithMessage("El nombre no puede estar en blanco")
-          .MaximumLength(50).WithMessage("El nombre no puede exceder los 50 caracteres");
+        
+         RuleFor(p => p.Nombre)
+                .NotEmpty().WithMessage("El Nombre no puede estar en blanco")
+                .MaximumLength(50).WithMessage("El Nombre no puede exceder los 50 caracteres");
 
-        RuleFor(x => x.Descripcion).NotEmpty()
-            .WithMessage("La descripción no puede ser nula");
+            RuleFor(p => p.Descripcion)
+                 .NotEmpty().WithMessage("La Descripcion no puede ser nula");
 
-            RuleFor(x => x.Stock).NotEmpty()
-        .WithMessage("La stock no puede ser nulo");
+             RuleFor(p => p.Stock)
+                 .NotEmpty().WithMessage("El Stock no puede ser nulo");
 
-            RuleFor(x => x.Precio).NotEmpty()
-        .WithMessage("El precio no puede ser nulo");
+            RuleFor(p => p.Precio)
+                 .NotEmpty().WithMessage("El Precio no puede ser nulo");
+
     }
 }

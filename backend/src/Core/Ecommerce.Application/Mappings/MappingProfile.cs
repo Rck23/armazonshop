@@ -10,31 +10,20 @@ using Ecommerce.Domain;
 
 namespace Ecommerce.Application.Mappings;
 
-public class MappingProfile: Profile
+public class MappingProfile : Profile
 {
-    public MappingProfile() {
-        CreateMap<Product, ProductVm>()
-            .ForMember(p => p.CategoryNombre, x => x.MapFrom(a => a.Category!.Nombre))
+    public MappingProfile()
+    {
+       CreateMap<Product, ProductVm>()
+            .ForMember(p=> p.CategoryNombre, x=> x.MapFrom(a => a.Category!.Nombre))
             .ForMember(p => p.NumeroReviews, x => x.MapFrom(a => a.Reviews == null ? 0 : a.Reviews.Count));
 
-
-        CreateMap<Image, ImageVm>();
-        CreateMap<Review, ReviewVm>();
-
-        // DECLARAR LAS CLASES DE PAIS
-        CreateMap<Country, CountryVm>();
-
-        // DECLARAR LAS CLASES DE CATEGORIA
-        CreateMap<Category, CategoryVm>();
-
-
-        // DECLARAR LAS CLASES DE PRODUCTO
-        CreateMap<CreateProductCommand, Product>();
-
-        // DECLARAR LAS CLASES DE LA IMAGEN DE UN PRODUCTO A IMAGEN
-        CreateMap<CreateProductImageCommand, Image>();
-
-        // DECLARAR LAS CLASES DE ACTUALIZAR PRODUCTO
-        CreateMap<UpdateProductCommand, Product>();
+       CreateMap<Image, ImageVm>();
+       CreateMap<Review, ReviewVm>();
+       CreateMap<Country, CountryVm>();
+       CreateMap<Category, CategoryVm>();
+       CreateMap<CreateProductCommand, Product>();
+       CreateMap<CreateProductImageCommand, Image>();
+       CreateMap<UpdateProductCommand, Product>();
     }
 }

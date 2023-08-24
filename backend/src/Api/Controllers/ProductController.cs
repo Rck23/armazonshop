@@ -8,6 +8,7 @@ using Ecommerce.Application.Features.Products.Queries.PaginationProducts;
 using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Application.Features.Shared.Queries;
 using Ecommerce.Application.Models.Authorization;
+using Ecommerce.Application.Models.ImageManagement;
 using Ecommerce.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,30 +34,27 @@ namespace Ecommerce.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("list", Name ="GetProductList")]
+        [HttpGet("list", Name = "GetProductList")]
         [ProducesResponseType(typeof(IReadOnlyList<ProductVm>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IReadOnlyList<ProductVm>>> GetProductList()
         {
-            var query = new GetProductListQuery(); 
+            var query = new GetProductListQuery();
 
             var productos = await _mediator.Send(query);
-            
+
             return Ok(productos);
         }
 
-
         [AllowAnonymous]
-        [HttpGet("pagination", Name ="PaginationProduct")]
+        [HttpGet("pagination", Name = "PaginationProduct")]
         [ProducesResponseType(typeof(PaginationVm<ProductVm>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaginationVm<ProductVm>>> PaginationProduct([FromQuery] PaginationProductQuery paginationProductQuery)
+        public async Task<ActionResult<PaginationVm<ProductVm>>> PaginationProduct(
+            [FromQuery] PaginationProductQuery paginationProductsQuery
+        )
         {
-            // SOLO MUESTRE LOS ACTIVOS
-            paginationProductQuery.Status = ProductStatus.Activo;
-            var paginationProduct = await _mediator.Send(paginationProductQuery);
-
+            paginationProductsQuery.Status = ProductStatus.Activo;
+            var paginationProduct = await _mediator.Send(paginationProductsQuery);
             return Ok(paginationProduct);
-
-
         }
 
         [AllowAnonymous]
@@ -66,7 +64,7 @@ namespace Ecommerce.Api.Controllers
         {
 
             var query = new GetProductByIdQuery(id);
-            return Ok (await _mediator.Send(query));
+            return Ok(await _mediator.Send(query));
 
         }
 
@@ -80,15 +78,15 @@ namespace Ecommerce.Api.Controllers
             var listFotosUrls = new List<CreateProductImageCommand>();
 
             // CARGAR LAS IMAGENES
-            if(createProduct.Fotos is not null)
+            if (createProduct.Fotos is not null)
             {
-                foreach(var foto in createProduct.Fotos)
+                foreach (var foto in createProduct.Fotos)
                 {
-                    var resultImage = await _manageImageService.UploadImage( new Application.Models.ImageManagement.ImageData
-                        {
-                            ImageStream = foto.OpenReadStream(),
-                            Nombre = foto.Name
-                        });
+                    var resultImage = await _manageImageService.UploadImage(new Application.Models.ImageManagement.ImageData
+                    {
+                        ImageStream = foto.OpenReadStream(),
+                        Nombre = foto.Name
+                    });
 
                     var fotoCommand = new CreateProductImageCommand
                     {
@@ -107,20 +105,18 @@ namespace Ecommerce.Api.Controllers
         }
 
 
-        //ACTUALIZAR PRODUCTO
         [Authorize(Roles = Role.ADMIN)]
         [HttpPut("update", Name = "UpdateProduct")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult<ProductVm>> UpdateProduct([FromForm] UpdateProductCommand updateProduct)
+        public async Task<ActionResult<ProductVm>> UpdateProduct([FromForm] UpdateProductCommand request)
         {
-            var listFotosUrls = new List<CreateProductImageCommand>();
+            var listFotoUrls = new List<CreateProductImageCommand>();
 
-            // CARGAR LAS IMAGENES
-            if (updateProduct.Fotos is not null)
+            if (request.Fotos is not null)
             {
-                foreach (var foto in updateProduct.Fotos)
+                foreach (var foto in request.Fotos)
                 {
-                    var resultImage = await _manageImageService.UploadImage(new Application.Models.ImageManagement.ImageData
+                    var resultImage = await _manageImageService.UploadImage(new ImageData
                     {
                         ImageStream = foto.OpenReadStream(),
                         Nombre = foto.Name
@@ -132,25 +128,29 @@ namespace Ecommerce.Api.Controllers
                         Url = resultImage.Url
                     };
 
-                    listFotosUrls.Add(fotoCommand);
+                    listFotoUrls.Add(fotoCommand);
                 }
-
-                updateProduct.ImageUrls = listFotosUrls;
+                request.ImageUrls = listFotoUrls;
             }
 
-            // ENVIAR AL HANDLER
-            return await _mediator.Send(updateProduct);
+            return await _mediator.Send(request);
+
         }
 
-        //ELIMINAR PRODUCTO
+
+
+
         [Authorize(Roles = Role.ADMIN)]
         [HttpDelete("status/{id}", Name = "UpdateStatusProduct")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<ProductVm>> UpdateStatusProduct(int id)
         {
-            var query = new DeleteProductCommand(id);
-
-            return await _mediator.Send(query);
+            var request = new DeleteProductCommand(id);
+            return await _mediator.Send(request);
         }
+
+
+
+
     }
 }

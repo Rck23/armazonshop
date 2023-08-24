@@ -21,38 +21,32 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
     public async Task<ProductVm> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var productoToUpdate = await _unitOfWork.Repository<Product>().GetByIdAsync(request.Id); 
-        if (productoToUpdate == null)
+        var productToUpdate = await _unitOfWork.Repository<Product>().GetByIdAsync(request.Id);
+        if (productToUpdate is null)
         {
             throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        // ACTUALIZAR LOS PRODUCTOS
-        _mapper.Map(request, productoToUpdate, typeof(UpdateProductCommand), typeof(Product));
+        _mapper.Map(request, productToUpdate, typeof(UpdateProductCommand), typeof(Product));
+        await _unitOfWork.Repository<Product>().UpdateAsync(productToUpdate);
 
-        await _unitOfWork.Repository<Product>().UpdateAsync(productoToUpdate);  
-
-
-        // ACTUALIZAR LAS IMAGENES
-        if((request.ImageUrls is not null) && request.ImageUrls.Count > 0)
+        if ((request.ImageUrls is not null) && request.ImageUrls.Count > 0)
         {
             var imagesToRemove = await _unitOfWork.Repository<Image>().GetAsync(
-                x => x.ProductId == request.Id    
+                x => x.ProductId == request.Id
             );
 
-            // CONJUNTO DE IMAGENES A ELIMINAR
             _unitOfWork.Repository<Image>().DeleteRange(imagesToRemove);
 
-            // CONJUNTO DE IMAGENES A AGREGAR
-            request.ImageUrls.Select(c => { c.ProductId = request.Id; return c; }).ToList();   
+            request.ImageUrls.Select(c => { c.ProductId = request.Id; return c; }).ToList();
             var images = _mapper.Map<List<Image>>(request.ImageUrls);
-
-            //ACTUALIZAR AL SERVIDOR (base de datos)
             _unitOfWork.Repository<Image>().AddRange(images);
-            
+
             await _unitOfWork.Complete();
         }
 
-        return _mapper.Map<ProductVm>(productoToUpdate); 
+
+        return _mapper.Map<ProductVm>(productToUpdate);
+
     }
 }
