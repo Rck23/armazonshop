@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ecommerce.Application.Features.Addresses.Vms;
 using Ecommerce.Application.Features.Categories.Vms;
 using Ecommerce.Application.Features.Countries.Vms;
 using Ecommerce.Application.Features.Images.Queries.Vms;
@@ -33,5 +34,8 @@ public class MappingProfile : Profile
 
 
         CreateMap<ShoppingCartItemVm, ShoppingCartItem>();
+
+
+        CreateMap<Address, AddressVm>();
     }
 }
