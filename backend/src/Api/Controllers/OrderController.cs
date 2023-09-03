@@ -2,9 +2,11 @@
 using Ecommerce.Application.Features.Addresses.Commands.CreateAddress;
 using Ecommerce.Application.Features.Addresses.Vms;
 using Ecommerce.Application.Features.Orders.Commands.CreateOrder;
+using Ecommerce.Application.Features.Orders.Commands.UpdateOrder;
 using Ecommerce.Application.Features.Orders.Vms;
+using Ecommerce.Application.Models.Authorization;
 using MediatR;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -36,6 +38,14 @@ namespace Ecommerce.Api.Controllers
         public async Task<ActionResult<OrderVm>> CreateOrder([FromBody] CreateOrderCommand createOrder)
         {
             return await _mediator.Send(createOrder);
+        }
+
+        [Authorize(Roles = Role.ADMIN)]
+        [HttpPut(Name = "UpdateOrder")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<OrderVm>> UpdateOrder([FromBody] UpdateOrderCommand updateOrder )
+        {
+            return await _mediator.Send(updateOrder);
         }
 
 
