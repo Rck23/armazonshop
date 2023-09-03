@@ -7,7 +7,7 @@ public class OrderItemVm
     public decimal Precio { get; set; }
     public int Cantidad { get; set; }
     public int ProductItemId { get; set; }
-    public string? ProductName { get; set; }
+    public string? ProductNombre { get; set; }
     public string? ImageUrl { get; set; }
 
 }
