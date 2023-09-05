@@ -4,7 +4,9 @@ using Ecommerce.Application.Features.Addresses.Vms;
 using Ecommerce.Application.Features.Orders.Commands.CreateOrder;
 using Ecommerce.Application.Features.Orders.Commands.UpdateOrder;
 using Ecommerce.Application.Features.Orders.Queries.GetOrdersById;
+using Ecommerce.Application.Features.Orders.Queries.PaginationOrders;
 using Ecommerce.Application.Features.Orders.Vms;
+using Ecommerce.Application.Features.Shared.Queries;
 using Ecommerce.Application.Models.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -59,6 +61,36 @@ namespace Ecommerce.Api.Controllers
             var query = new GetOrdersByIdQuery(id);
 
             return Ok(await _mediator.Send(query)); 
+        }
+
+
+        // PAGINACION SOBRE UN DETERMINADO USUARIO EN SESION 
+        [HttpGet("paginationByUsername", Name = "PaginationOrderByUsername")]
+        [ProducesResponseType(typeof(PaginationVm<OrderVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginationVm<OrderVm>>> PaginationOrderByUsername([FromQuery] PaginationOrdersQuery pagination)
+        {
+            // OBETENER DEL TOKEN EL USUARIO QUE ESTA EN SESION
+            pagination.Username = _authService.GetSessionUser();
+
+            var paginationData = await _mediator.Send(pagination);
+
+            return Ok(paginationData);
+
+        }
+
+
+        // PAGINACION CUANDO EL USUARIO SEA ADMINISTRADOR 
+        [Authorize(Roles =Role.ADMIN)]
+        [HttpGet("PaginationAdmin", Name = "PaginationOrder")]
+        [ProducesResponseType(typeof(PaginationVm<OrderVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaginationVm<OrderVm>>> PaginationOrder([FromQuery] PaginationOrdersQuery pagination)
+        {
+            // OBETENER DEL TOKEN EL USUARIO QUE SEA ADMINISTRADOR
+
+            var paginationData = await _mediator.Send(pagination);
+
+            return Ok(paginationData);
+
         }
     }
 }
