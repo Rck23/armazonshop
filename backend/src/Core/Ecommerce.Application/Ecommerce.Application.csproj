@@ -35,6 +35,12 @@
 		<PackageReference Include="Stripe.net" Version="41.2.0" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Features\Payments\Vms\" />
+	  <Folder Include="Features\Payments\Queries\" />
+	</ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
