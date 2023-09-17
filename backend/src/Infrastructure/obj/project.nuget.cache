@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K4zC1T2++PH7xeL+io+Yp1iIz6ABopNJDio5ogllZ0L9aUVvxXMJVAeZZsU/1NBl9HjGIkPp2d5pQ8J4Pu8brQ==",
+  "dgSpecHash": "lfMyDuW+FD1suLxKv0lvPU+Z4fnrqrIblpTepLBNEQtWqxn3wSXCcUB0heFsgGQvYZucPGRXB7g4BbPLKdWCpQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ulimx\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\ulimx\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

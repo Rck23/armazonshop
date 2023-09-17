@@ -5559,11 +5559,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Api\\Ecommerce.Api.csproj",
+      "projectUniqueName": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Api\\Ecommerce.Api.csproj",
       "projectName": "Ecommerce.Api",
-      "projectPath": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Api\\Ecommerce.Api.csproj",
+      "projectPath": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Api\\Ecommerce.Api.csproj",
       "packagesPath": "C:\\Users\\ulimx\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Api\\obj\\",
+      "outputPath": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ulimx\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5574,18 +5574,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Core\\Ecommerce.Application\\Ecommerce.Application.csproj": {
-              "projectPath": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Core\\Ecommerce.Application\\Ecommerce.Application.csproj"
+            "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Core\\Ecommerce.Application\\Ecommerce.Application.csproj": {
+              "projectPath": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Core\\Ecommerce.Application\\Ecommerce.Application.csproj"
             },
-            "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\ulimx\\Source\\Repos\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj"
+            "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\ulimx\\OneDrive\\Escritorio\\armazonshop\\backend\\src\\Infrastructure\\Ecommerce.Infrastructure.csproj"
             }
           }
         }
@@ -5634,7 +5633,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
