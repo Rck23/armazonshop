@@ -2,13 +2,13 @@
 
 const prod = {
     url: {
-        API_URL: 'Servidor de produccion'
+        API_URL: 'http://localhost:5000'
     }
 }
 
 const dev = {
     url: {
-        API_URL: 'dev'
+        API_URL: 'http://localhost:5000'
     }
 }
 

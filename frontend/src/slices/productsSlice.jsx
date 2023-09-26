@@ -26,4 +26,6 @@ export const productsSlice = createSlice ({
             state.error = action.payload;
         }
     }
-})
+});
+
+export const productsReducer = productsSlice.reducer; 
