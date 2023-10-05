@@ -3,17 +3,35 @@ import MetaData from "./layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productsAction";
 import Product from "./products/Product";
+import Loader from "./layout/Loader";
+import { useAlert } from "react-alert";
 
 const Home = () => {
 
   const dispatch = useDispatch(); 
 
-  useEffect (() => {
-    dispatch(getProducts());
-  }, [dispatch])
-
   //{products} INVOCA LA COLECCION DE PRODUCTOS & state.products INVOCA LA DATA QUE ESTA EN EL STORE
-  const {products} = useSelector((state) => state.products); 
+  const {products, loading, error} = useSelector((state) => state.products); 
+
+  const alert = useAlert();
+
+
+  useEffect (() => {
+    
+    if(error != null){
+      
+      return alert.error(error); 
+
+    }
+
+
+    dispatch(getProducts());
+
+  }, [dispatch, alert, error])
+
+  if(loading){
+    return (<Loader/>); 
+  }
 
   return (
     <Fragment>
